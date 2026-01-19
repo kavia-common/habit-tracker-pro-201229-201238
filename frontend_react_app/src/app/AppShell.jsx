@@ -18,7 +18,11 @@ export default function AppShell() {
   const { setActiveCategory } = useAppActions();
   const categories = selectCategories(useAppState());
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  // Separate drawers:
+  // - filtersDrawerOpen: category filters (mobile)
+  // - navDrawerOpen: primary navigation (mobile)
+  const [filtersDrawerOpen, setFiltersDrawerOpen] = useState(false);
+  const [navDrawerOpen, setNavDrawerOpen] = useState(false);
 
   const categoryList = (
     <div className="sidebar">
@@ -49,6 +53,26 @@ export default function AppShell() {
     </div>
   );
 
+  const primaryNavLinks = (
+    <nav className="topnav-links" aria-label="Primary navigation links">
+      <NavLink to="/" className={linkClass} end onClick={() => setNavDrawerOpen(false)}>
+        Dashboard
+      </NavLink>
+      <NavLink to="/habits" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
+        Habits
+      </NavLink>
+      <NavLink to="/analytics" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
+        Analytics
+      </NavLink>
+      <NavLink to="/archive" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
+        Archive
+      </NavLink>
+      <NavLink to="/settings" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
+        Settings
+      </NavLink>
+    </nav>
+  );
+
   return (
     <div className="app-root">
       <header className="topbar">
@@ -56,7 +80,7 @@ export default function AppShell() {
           <IconButton
             className="mobile-only"
             ariaLabel="Open category filters"
-            onClick={() => setDrawerOpen(true)}
+            onClick={() => setFiltersDrawerOpen(true)}
           >
             ☰
           </IconButton>
@@ -66,6 +90,7 @@ export default function AppShell() {
           </div>
         </div>
 
+        {/* Desktop primary navigation */}
         <nav className="topnav" aria-label="Primary">
           <NavLink to="/" className={linkClass} end>
             Dashboard
@@ -84,14 +109,25 @@ export default function AppShell() {
           </NavLink>
         </nav>
 
-        <button
-          className="btn btn-secondary"
-          onClick={toggleTheme}
-          type="button"
-          aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-        >
-          {theme === "light" ? "Dark" : "Light"}
-        </button>
+        <div className="topbar-right">
+          {/* Mobile primary navigation menu */}
+          <IconButton
+            className="mobile-only"
+            ariaLabel="Open navigation menu"
+            onClick={() => setNavDrawerOpen(true)}
+          >
+            ☰
+          </IconButton>
+
+          <button
+            className="btn btn-secondary"
+            onClick={toggleTheme}
+            type="button"
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          >
+            {theme === "light" ? "Dark" : "Light"}
+          </button>
+        </div>
       </header>
 
       <div className="layout">
@@ -106,8 +142,13 @@ export default function AppShell() {
         </main>
       </div>
 
-      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Filters">
+      {/* Mobile drawers */}
+      <Drawer open={filtersDrawerOpen} onClose={() => setFiltersDrawerOpen(false)} title="Filters">
         {categoryList}
+      </Drawer>
+
+      <Drawer open={navDrawerOpen} onClose={() => setNavDrawerOpen(false)} title="Menu">
+        {primaryNavLinks}
       </Drawer>
     </div>
   );
