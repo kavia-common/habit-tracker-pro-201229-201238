@@ -51,11 +51,12 @@ export default function HabitsPage() {
     <div className="page">
       <div className="page-header">
         <div>
-          <h1 className="page-title">Habits</h1>
+          <h1 className="page-title">My Habits</h1>
           <p className="page-desc">Create, edit, and organize your daily habits.</p>
         </div>
+
         <button className="btn" type="button" onClick={openAdd}>
-          + Add Habit
+          ➕ Add New Habit
         </button>
       </div>
 
@@ -63,11 +64,11 @@ export default function HabitsPage() {
 
       {habits.length === 0 ? (
         <div className="card">
-          <div className="card-title">Start with one habit</div>
-          <div className="card-subtitle">Add a habit and it will appear in Today.</div>
+          <div className="card-title">No habits created yet</div>
+          <div className="card-subtitle">Use the button above to create your first habit and start tracking!</div>
         </div>
       ) : (
-        <div className="habit-list">
+        <div className="habit-list" aria-label="Habits list">
           {habits.map((h) => (
             <HabitCard
               key={h.id}

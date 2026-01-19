@@ -1,23 +1,27 @@
-/* Neon Violet theme tokens (light/dark) using semantic CSS variables. */
+/* Neon Violet theme tokens (light/dark) using semantic CSS variables.
+ * Updated to support the FreeWWW Habit Tracker-like layout (tabs, stat tiles, habit tiles).
+ */
 
 :root {
-  --color-bg: #f9fafb;
+  --color-bg: #f6f7fb;
   --color-surface: #ffffff;
-  --color-surface-2: #f3f4f6;
+  --color-surface-2: #f1f3f7;
   --color-text: #111827;
   --color-muted: #6b7280;
-  --color-border: rgba(17, 24, 39, 0.12);
+  --color-border: rgba(17, 24, 39, 0.10);
 
   --color-primary: #7c3aed; /* Neon Violet */
   --color-secondary: #06b6d4;
   --color-success: #22c55e;
   --color-error: #ef4444;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 10px 30px rgba(16, 24, 40, 0.12);
 
+  --radius-sm: 10px;
   --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 22px;
 
   --space-xs: 4px;
   --space-sm: 8px;
@@ -26,7 +30,19 @@
   --space-xl: 24px;
   --space-2xl: 32px;
 
-  --focus-ring: 0 0 0 3px rgba(124, 58, 237, 0.35);
+  --focus-ring: 0 0 0 3px rgba(124, 58, 237, 0.28);
+
+  /* New semantic tokens for “FreeWWW-like” tiles */
+  --app-max-width: 1100px;
+  --content-pad: 16px;
+
+  --tile-bg: #ffffff;
+  --tile-border: rgba(17, 24, 39, 0.10);
+  --tile-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+
+  --tab-bg: rgba(17, 24, 39, 0.04);
+  --tab-active-bg: rgba(124, 58, 237, 0.14);
+  --tab-active-border: rgba(124, 58, 237, 0.28);
 }
 
 [data-theme="dark"] {
@@ -34,11 +50,19 @@
   --color-surface: #111827;
   --color-surface-2: #0f172a;
   --color-text: #f9fafb;
-  --color-muted: rgba(249, 250, 251, 0.7);
+  --color-muted: rgba(249, 250, 251, 0.72);
   --color-border: rgba(249, 250, 251, 0.14);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 12px 34px rgba(0, 0, 0, 0.45);
+
+  --tile-bg: #0f172a;
+  --tile-border: rgba(249, 250, 251, 0.14);
+  --tile-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+
+  --tab-bg: rgba(249, 250, 251, 0.06);
+  --tab-active-bg: rgba(124, 58, 237, 0.22);
+  --tab-active-border: rgba(124, 58, 237, 0.38);
 }
 
 /* Reduced motion support */

@@ -23,93 +23,133 @@ a {
   background: var(--color-bg);
 }
 
+/* ---------- Header / top tabs (FreeWWW-like) ---------- */
+
 .topbar {
   position: sticky;
   top: 0;
   z-index: 20;
-  display: flex;
-  gap: var(--space-lg);
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-md) var(--space-lg);
+  display: grid;
+  gap: var(--space-md);
+  padding: 12px var(--content-pad);
   border-bottom: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(10px);
-  min-width: 0; /* avoid overflow issues in constrained iframe widths */
+  min-width: 0;
 }
 
 [data-theme="dark"] .topbar {
-  background: rgba(17, 24, 39, 0.75);
+  background: rgba(17, 24, 39, 0.78);
 }
 
-.topbar-left {
-  display: flex;
-  gap: var(--space-md);
-  align-items: center;
-  min-width: 220px;
-}
-
-.topbar-right {
-  display: flex;
-  gap: var(--space-sm);
-  align-items: center;
-  flex-shrink: 0;
-}
-
-/* Used inside the "Menu" drawer on mobile */
-.topnav-links {
+.topbar-inner {
+  max-width: var(--app-max-width);
+  width: 100%;
+  margin: 0 auto;
   display: grid;
-  gap: 8px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
 }
 
 .brand-title {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 900;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .brand-subtitle {
   font-size: 12px;
   color: var(--color-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.topnav {
-  display: none;
-  gap: var(--space-md);
+.topbar-actions {
+  display: flex;
+  gap: var(--space-sm);
   align-items: center;
+  justify-content: flex-end;
 }
 
-.navlink {
-  padding: 8px 10px;
-  border-radius: 10px;
+/* Tabs row */
+.top-tabs {
+  max-width: var(--app-max-width);
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px;
+  border-radius: 999px;
+  background: var(--tab-bg);
+  border: 1px solid var(--color-border);
+}
+
+.top-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+.top-tabs::-webkit-scrollbar-thumb {
+  background: rgba(17, 24, 39, 0.18);
+  border-radius: 999px;
+}
+[data-theme="dark"] .top-tabs::-webkit-scrollbar-thumb {
+  background: rgba(249, 250, 251, 0.18);
+}
+
+.tablink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 999px;
   text-decoration: none;
   color: var(--color-muted);
+  font-weight: 800;
+  font-size: 13px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  background: transparent;
+  min-height: 40px;
 }
 
-.navlink:focus-visible {
+.tablink:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
-.navlink-active {
+.tablink-active {
   color: var(--color-text);
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.16), rgba(6, 182, 212, 0.12));
-  border: 1px solid rgba(124, 58, 237, 0.25);
+  background: var(--tab-active-bg);
+  border-color: var(--tab-active-border);
 }
 
+/* ---------- Main layout ---------- */
+
 .layout {
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--content-pad);
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-lg);
-  padding: var(--space-lg);
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .main {
   min-width: 0;
 }
 
+/* Keep existing sidebar structure but treat as an optional panel for desktop */
 .desktop-only {
   display: none;
 }
@@ -124,7 +164,7 @@ a {
 
 .sidebar-title {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--color-muted);
   margin-bottom: var(--space-sm);
 }
@@ -144,6 +184,7 @@ a {
   font-size: 13px;
   cursor: pointer;
   min-height: 40px;
+  font-weight: 700;
 }
 
 .chip:hover {
@@ -160,6 +201,8 @@ a {
   background: rgba(124, 58, 237, 0.12);
 }
 
+/* ---------- Page primitives ---------- */
+
 .page {
   display: flex;
   flex-direction: column;
@@ -175,17 +218,54 @@ a {
 }
 
 .page-title {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 900;
   margin: 0;
   letter-spacing: -0.02em;
 }
 
 .page-desc {
-  margin: 0;
+  margin: 6px 0 0;
   color: var(--color-muted);
-  font-size: 14px;
+  font-size: 13px;
 }
+
+/* ---------- Stat tiles (dashboard-like) ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.stat-tile {
+  background: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--tile-shadow);
+  padding: 12px 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.stat-title {
+  color: var(--color-muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.stat-hint {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+/* ---------- Cards (keep existing but soften) ---------- */
 
 .grid {
   display: grid;
@@ -203,7 +283,7 @@ a {
 
 .card-title {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   margin: 0 0 var(--space-sm);
 }
 
@@ -220,13 +300,15 @@ a {
   justify-content: space-between;
 }
 
+/* ---------- Buttons / controls ---------- */
+
 .btn {
   border: 1px solid transparent;
   background: var(--color-primary);
   color: white;
   border-radius: 12px;
   padding: 10px 12px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   min-height: 44px;
 }
@@ -303,13 +385,15 @@ a {
 
 .label {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .helper {
   font-size: 12px;
   color: var(--color-muted);
 }
+
+/* ---------- Badges ---------- */
 
 .badge {
   display: inline-flex;
@@ -321,6 +405,7 @@ a {
   border: 1px solid var(--color-border);
   background: var(--color-surface-2);
   color: var(--color-text);
+  font-weight: 800;
 }
 
 .badge-success {
@@ -332,6 +417,8 @@ a {
   border-color: rgba(124, 58, 237, 0.35);
   background: rgba(124, 58, 237, 0.12);
 }
+
+/* ---------- Modal ---------- */
 
 .modal-backdrop {
   position: fixed;
@@ -364,7 +451,7 @@ a {
 .modal-title {
   margin: 0;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 950;
 }
 
 .modal-actions {
@@ -373,6 +460,8 @@ a {
   justify-content: flex-end;
   margin-top: var(--space-md);
 }
+
+/* ---------- Drawer ---------- */
 
 .drawer {
   width: min(420px, 100%);
@@ -394,51 +483,96 @@ a {
   background: rgba(0, 0, 0, 0.48);
 }
 
-.kpi {
-  display: grid;
-  gap: var(--space-xs);
-}
-
-.kpi-value {
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-}
-
-.kpi-label {
-  color: var(--color-muted);
-  font-size: 12px;
-}
+/* ---------- Habit tiles (FreeWWW-like interaction) ---------- */
 
 .habit-list {
   display: grid;
   gap: var(--space-md);
 }
 
-.habit-card {
+.habit-tile {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--tile-shadow);
+  padding: 14px 14px;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.habit-tile:hover {
+  transform: translateY(-1px);
+  border-color: rgba(124, 58, 237, 0.28);
+  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.10);
+}
+
+.habit-tile:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.habit-tile-top {
   display: grid;
+  grid-template-columns: 1fr auto;
   gap: var(--space-md);
+  align-items: start;
 }
 
-.habit-name {
+.habit-title {
   margin: 0;
-  font-weight: 800;
-  font-size: 16px;
+  font-weight: 950;
+  font-size: 15px;
+  letter-spacing: -0.01em;
 }
 
-.habit-desc {
-  margin: 0;
+.habit-subtitle {
+  margin: 6px 0 0;
   color: var(--color-muted);
   font-size: 13px;
 }
 
-.habit-meta {
+.habit-right {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.habit-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.habit-check[data-state="on"] {
+  border-color: rgba(34, 197, 94, 0.45);
+  background: rgba(34, 197, 94, 0.14);
+}
+
+.habit-check:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.habit-tile-meta {
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
   align-items: center;
 }
 
+/* Keep compatibility for existing toggle styles used elsewhere */
 .toggle {
   display: inline-flex;
   align-items: center;
@@ -461,6 +595,8 @@ a {
   outline: none;
   box-shadow: var(--focus-ring);
 }
+
+/* ---------- Heatmap (unchanged) ---------- */
 
 .heatmap {
   display: grid;
@@ -505,20 +641,42 @@ a {
   box-shadow: var(--focus-ring);
 }
 
-/* Desktop breakpoint */
-@media (min-width: 960px) {
-  .topnav {
-    display: flex;
+/* ---------- Footer ---------- */
+
+.app-footer {
+  max-width: var(--app-max-width);
+  margin: 24px auto 32px;
+  padding: 0 var(--content-pad);
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.app-footer strong {
+  color: var(--color-text);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (min-width: 720px) {
+  .stat-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
+}
+
+@media (min-width: 960px) {
   .layout {
     grid-template-columns: 280px 1fr;
   }
+
   .desktop-only {
     display: block;
   }
+
   .mobile-only {
     display: none;
   }
+
   .grid {
     grid-template-columns: 1fr 1fr;
   }

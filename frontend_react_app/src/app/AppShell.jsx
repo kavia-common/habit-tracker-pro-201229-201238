@@ -7,11 +7,11 @@ import { selectCategories } from "./store/selectors";
 import Drawer from "../components/common/Drawer";
 import IconButton from "../components/common/IconButton";
 
-const linkClass = ({ isActive }) => (isActive ? "navlink navlink-active" : "navlink");
+const tabClass = ({ isActive }) => (isActive ? "tablink tablink-active" : "tablink");
 
 // PUBLIC_INTERFACE
 export default function AppShell() {
-  /** Main layout: top nav + responsive sidebar for categories + routed main content. */
+  /** Main layout: top tabs (FreeWWW-like) + responsive sidebar for categories + routed main content. */
   const routes = useMemo(() => getRoutes(), []);
   const { theme, toggleTheme } = useTheme();
   const { ui } = useAppState();
@@ -27,14 +27,14 @@ export default function AppShell() {
   const categoryList = (
     <div className="sidebar">
       <div className="sidebar-section">
-        <div className="sidebar-title">Categories</div>
+        <div className="sidebar-title">Filter</div>
         <div className="chip-row">
           <button
             className={ui.activeCategoryId ? "chip" : "chip chip-active"}
             onClick={() => setActiveCategory("")}
             type="button"
           >
-            All
+            All Categories
           </button>
           {categories.map((c) => (
             <button
@@ -55,19 +55,19 @@ export default function AppShell() {
 
   const primaryNavLinks = (
     <nav className="topnav-links" aria-label="Primary navigation links">
-      <NavLink to="/" className={linkClass} end onClick={() => setNavDrawerOpen(false)}>
-        Dashboard
+      <NavLink to="/" className={tabClass} end onClick={() => setNavDrawerOpen(false)}>
+        Today
       </NavLink>
-      <NavLink to="/habits" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
-        Habits
+      <NavLink to="/habits" className={tabClass} onClick={() => setNavDrawerOpen(false)}>
+        My Habits
       </NavLink>
-      <NavLink to="/analytics" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
-        Analytics
+      <NavLink to="/analytics" className={tabClass} onClick={() => setNavDrawerOpen(false)}>
+        Statistics
       </NavLink>
-      <NavLink to="/archive" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
+      <NavLink to="/archive" className={tabClass} onClick={() => setNavDrawerOpen(false)}>
         Archive
       </NavLink>
-      <NavLink to="/settings" className={linkClass} onClick={() => setNavDrawerOpen(false)}>
+      <NavLink to="/settings" className={tabClass} onClick={() => setNavDrawerOpen(false)}>
         Settings
       </NavLink>
     </nav>
@@ -76,58 +76,58 @@ export default function AppShell() {
   return (
     <div className="app-root">
       <header className="topbar">
-        <div className="topbar-left">
-          <IconButton
-            className="mobile-only"
-            ariaLabel="Open category filters"
-            onClick={() => setFiltersDrawerOpen(true)}
-          >
-            ☰
-          </IconButton>
+        <div className="topbar-inner">
           <div className="brand">
-            <div className="brand-title">Habit Tracker</div>
+            <div className="brand-title">Free Habit Tracker</div>
             <div className="brand-subtitle">Daily check-ins, streaks, analytics</div>
+          </div>
+
+          <div className="topbar-actions">
+            <IconButton
+              className="mobile-only"
+              ariaLabel="Open category filters"
+              onClick={() => setFiltersDrawerOpen(true)}
+            >
+              ☰
+            </IconButton>
+
+            <IconButton
+              className="mobile-only"
+              ariaLabel="Open navigation menu"
+              onClick={() => setNavDrawerOpen(true)}
+            >
+              ☷
+            </IconButton>
+
+            <button
+              className="btn btn-secondary"
+              onClick={toggleTheme}
+              type="button"
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            >
+              {theme === "light" ? "Dark" : "Light"}
+            </button>
           </div>
         </div>
 
-        {/* Desktop primary navigation */}
-        <nav className="topnav" aria-label="Primary">
-          <NavLink to="/" className={linkClass} end>
-            Dashboard
+        {/* Desktop tabs */}
+        <nav className="top-tabs desktop-only" aria-label="Primary">
+          <NavLink to="/" className={tabClass} end>
+            Today
           </NavLink>
-          <NavLink to="/habits" className={linkClass}>
-            Habits
+          <NavLink to="/habits" className={tabClass}>
+            My Habits
           </NavLink>
-          <NavLink to="/analytics" className={linkClass}>
-            Analytics
+          <NavLink to="/analytics" className={tabClass}>
+            Statistics
           </NavLink>
-          <NavLink to="/archive" className={linkClass}>
+          <NavLink to="/archive" className={tabClass}>
             Archive
           </NavLink>
-          <NavLink to="/settings" className={linkClass}>
+          <NavLink to="/settings" className={tabClass}>
             Settings
           </NavLink>
         </nav>
-
-        <div className="topbar-right">
-          {/* Mobile primary navigation menu */}
-          <IconButton
-            className="mobile-only"
-            ariaLabel="Open navigation menu"
-            onClick={() => setNavDrawerOpen(true)}
-          >
-            ☰
-          </IconButton>
-
-          <button
-            className="btn btn-secondary"
-            onClick={toggleTheme}
-            type="button"
-            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-          >
-            {theme === "light" ? "Dark" : "Light"}
-          </button>
-        </div>
       </header>
 
       <div className="layout">
@@ -139,11 +139,22 @@ export default function AppShell() {
               <Route key={r.path} path={r.path} element={r.element} />
             ))}
           </Routes>
+
+          <footer className="app-footer" aria-label="About and tips">
+            <div style={{ marginTop: 18 }}>
+              <strong>Tip:</strong> For best results, check in daily around the same time. Small consistent steps
+              lead to big changes over time.
+            </div>
+            <div style={{ marginTop: 8 }}>
+              Your data stays local in this browser (offline-first). Use Archive instead of Delete to preserve
+              history.
+            </div>
+          </footer>
         </main>
       </div>
 
       {/* Mobile drawers */}
-      <Drawer open={filtersDrawerOpen} onClose={() => setFiltersDrawerOpen(false)} title="Filters">
+      <Drawer open={filtersDrawerOpen} onClose={() => setFiltersDrawerOpen(false)} title="Filter">
         {categoryList}
       </Drawer>
 
